@@ -11,9 +11,46 @@ function App() {
   const NUMS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '+', '-', '=', 'C'];
 
   const numAdd = (num) => {
-    setOperand1(prev => prev + num);
+    setOperand1(prev =>
+      prev === '0'
+        ? String(num)
+        : prev + num
+    );
     setShowResult(false);
-  }
+  };
+
+  const operations = (oper) => {
+    switch (oper) {
+      case 'C':
+        clear();
+        break;
+
+      case '+':
+      case '-':
+        setOperand2(operand1);
+        setOperand1('');
+        setOperator(oper);
+        setShowResult(false);
+        break;
+        
+      case '=': {
+        const res = calculator(
+          Number(operand2),
+          Number(operand1),
+          operator
+        );
+
+        setOperand1(res.toString());
+        setOperand2('');
+        setOperator(null);
+        setShowResult(true);
+        break;
+      }
+
+      default:
+        break;
+    }
+  };
 
   const clear = () => {
     setOperand1('');
@@ -21,41 +58,18 @@ function App() {
     setOperator(null);
   };
 
-  const operations = (oper) => {
-    if (oper === 'C') {
-      clear()
+
+  const calculator = (num1, num2, oper) => {
+    switch (oper) {
+      case '+':
+        return num1 + num2;
+
+      case '-':
+        return num1 - num2;
+
+      default:
+        return num2;
     }
-
-    if (oper === '+' || oper === '-') {
-      setOperator(oper);
-      setOperand2(operand1)
-      setOperand1('')
-      setShowResult(false)
-    }
-
-    if (oper === '=') {
-      result();
-    }
-
-  };
-
-  const result = () => {
-    const num1 = Number(operand2);
-    const num2 = Number(operand1);
-    let res;
-
-    if (operator === '+') {
-      res = num1 + num2;
-    }
-
-    if (operator === '-') {
-      res = num1 - num2
-    }
-
-    setOperand1(res.toString());
-    setOperand2('');
-    setOperator('')
-    setShowResult(true);
   };
 
   return (
