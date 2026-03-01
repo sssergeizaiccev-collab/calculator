@@ -32,7 +32,7 @@ function App() {
         setOperator(oper);
         setShowResult(false);
         break;
-        
+
       case '=': {
         const res = calculator(
           Number(operand2),
@@ -71,6 +71,7 @@ function App() {
         return num2;
     }
   };
+
 
   return (
     <div className='container'>
